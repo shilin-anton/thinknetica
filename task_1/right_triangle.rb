@@ -20,6 +20,8 @@ end
 if sides.uniq.size == 1
   puts "Треугольник равнобедренный и равносторонний, но не прямоугольный"
 else
+  sides.sort!
+
   is_right = (sides[2]**2 == sides[0]**2 + sides[1]**2) 
   is_isosceles = sides.uniq.size == 2
 
