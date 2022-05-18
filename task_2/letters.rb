@@ -2,6 +2,10 @@
 Заполнить хеш гласными буквами, где значением будет являтся порядковый номер буквы в алфавите (a - 1).
 =end
 
-hash = { 'a' => 1, 'e' => 5, 'i' => 9, 'o' => 15, 'u' => 21, 'y' => 25 }
+vowels = ['a', 'e', 'i', 'o', 'u', 'y']
+
+hash = Hash.new
+
+('a'..'z').each_with_index { |l, i| hash[l] = i+1 if vowels.include?(l) }
 
 print hash
