@@ -19,12 +19,19 @@ loop do
   puts "Кол-во:"
   amount = gets.chomp.to_f
   
+  # Проверка на то что товар уже есть в корзине, исходя из условия, не нужна
   result[product] = {"price" => price, "amount" => amount}
 end
 
 sum = 0
-result.each { |k,v| sum += v["price"] * v["amount"] }
 
-puts result
-puts "Итого: #{sum}"
+puts "Весь хэш: #{result}"
+
+result.each do |k,v|
+  sum_for_product = v["price"] * v["amount"]
+  puts "Итого за #{k}: #{sum_for_product}"
+  sum += sum_for_product
+end
+
+puts "Итого в корзине: #{sum}"
 
