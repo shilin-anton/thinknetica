@@ -8,15 +8,15 @@ class Station
 
   @@stations_list = []
 
+  def self.all
+    @@stations_list
+  end
+
   def initialize(name)
     @name = name
     @trains = []
     register_instance
     @@stations_list << self
-  end
-
-  def all
-    @@stations_list
   end
 
   def add_train(train)

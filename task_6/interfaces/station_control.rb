@@ -12,6 +12,7 @@ class StationControl
     puts "1 - Создать станцию"
     puts "2 - Запросить список станций"
     puts "3 - Запросить список поездов на станции"
+    puts "4 - Запросить список объектов станций (метод класса all)"
     puts "0 или любой текст - Вернуться в главное меню"
 
     action = gets.chomp.to_i
@@ -23,6 +24,8 @@ class StationControl
         get_stations
       when 3
         get_trains_on_station
+      when 4
+        self_get_stations
       else
         @main_data.start
     end
@@ -68,6 +71,12 @@ class StationControl
       station.get_trains
     end
     start 
+  end
+
+  def self_get_stations
+    puts "Список объектов станций из метода класса Station:"
+    puts Station.all
+    start
   end
 
 end
