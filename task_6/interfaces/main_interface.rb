@@ -44,7 +44,7 @@ class MainInterface
       puts "Список всех поездов:"
       @trains.each_with_index do |t, i| 
         puts "#{i+1}: #{t.number}, тип: #{t.type}, производитель: #{t.manufacturer}, кол-во вагонов: #{t.cars.length}"
-        puts "Информация о вагонах:"
+        puts "\t Информация о вагонах:"
         t.cars.each_with_index { |c,i| puts "#{i+1}: Производитель: #{c.manufacturer}"}
       end
     end

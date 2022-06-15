@@ -31,11 +31,11 @@ class StationControl
   private
 
   def create_station
+    system 'clear'
     puts "Введите название станции!"
     station_name = gets.chomp
     station = Station.new(station_name)
     @main_data.stations << station
-    system 'clear'
     puts "Создана станция #{station.name}"
     start
   end

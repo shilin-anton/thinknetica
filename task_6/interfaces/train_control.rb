@@ -219,6 +219,7 @@ private
       puts "Такого поезда нет"
     else
       puts "Вот поезд: #{train_object}"
+      puts "QQQ: #{train_object.instances}"
     end
     start
   end

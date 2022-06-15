@@ -1,7 +1,10 @@
+
 require './modules/manufacturer.rb'
+require './modules/instance_counter.rb'
 
 class Train
   include Manufacturer
+  include InstanceCounter
   attr_reader :number, :route, :type, :cars
 
   @@trains_list = []
@@ -12,6 +15,7 @@ class Train
     @speed = 0
     @cars = []
     set_manufacturer(manufacturer)
+    register_instance
     @@trains_list << self
   end
 
