@@ -1,9 +1,12 @@
+# frozen_string_literal: true
 
-require './modules/manufacturer.rb'
-require './modules/capacity.rb'
+require './modules/manufacturer'
+require './modules/capacity'
 
 class Car
-  include Manufacturer, Capacity, Validation
+  include Validation
+  include Capacity
+  include Manufacturer
   attr_reader :type, :free_space
 
   def initialize(manufacturer, capacity)
@@ -12,11 +15,10 @@ class Car
     @free_space = capacity.to_i
 
     valid, msg = valid?(self)
-    raise ValidationError.new(msg) if !valid
+    raise ValidationError, msg unless valid
   end
 
   def occupied_space
-    return (capacity - @free_space)
+    (capacity - @free_space)
   end
-  
 end

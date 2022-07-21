@@ -1,12 +1,13 @@
-class CargoCar < Car
+# frozen_string_literal: true
 
+class CargoCar < Car
   def initialize(manufacturer, capacity)
     @type = 'cargo'
     super(manufacturer, capacity)
   end
 
   def take_space(volume)
-    if @free_space > 0 && @free_space >= volume
+    if @free_space.positive? && @free_space >= volume
       @free_space -= volume
       puts "У вагона #{self} занят объем == #{volume}! \n Свободный объем: #{@free_space}"
     else

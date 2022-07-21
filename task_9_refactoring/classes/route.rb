@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 
-require './modules/instance_counter.rb'
+require './modules/instance_counter'
 
 class Route
   include InstanceCounter
@@ -14,7 +15,7 @@ class Route
     result = false
     if @stations.include?(station)
       puts "Станция #{station.name} уже входит в состав маршрута!"
-    else 
+    else
       @stations.insert(-2, station)
       result = true
     end
@@ -27,7 +28,7 @@ class Route
         puts "Станция #{station.name} удалена из маршрута #{self}!"
         @stations.delete(station)
       else
-        puts "Нельзя удалять начальные и конечные станции маршрута!"
+        puts 'Нельзя удалять начальные и конечные станции маршрута!'
       end
     else
       puts "Станции #{station.name} нет в промежуточном маршруте!"
@@ -35,6 +36,6 @@ class Route
   end
 
   def get_stations
-    @stations.each { |s| puts s.name } 
+    @stations.each { |s| puts s.name }
   end
 end

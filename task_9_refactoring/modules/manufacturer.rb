@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module Manufacturer
   def set_manufacturer(manufacturer)
@@ -5,9 +6,10 @@ module Manufacturer
   end
 
   def manufacturer
-    self.company_name
+    company_name
   end
 
   protected
+
   attr_accessor :company_name
 end

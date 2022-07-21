@@ -1,11 +1,15 @@
+# frozen_string_literal: true
 
-require './modules/manufacturer.rb'
-require './modules/instance_counter.rb'
-require './modules/validation.rb'
-require './modules/capacity.rb'
+require './modules/manufacturer'
+require './modules/instance_counter'
+require './modules/validation'
+require './modules/capacity'
 
 class Train
-  include Manufacturer, Capacity, InstanceCounter, Validation
+  include Validation
+  include InstanceCounter
+  include Capacity
+  include Manufacturer
   attr_reader :number, :route, :type, :cars
 
   @@trains_list = []
@@ -17,8 +21,8 @@ class Train
     set_manufacturer(manufacturer)
 
     valid, msg = valid?(self)
-    raise ValidationError.new(msg) if !valid
-    
+    raise ValidationError, msg unless valid
+
     register_instance
     @@trains_list << self
   end
@@ -27,16 +31,16 @@ class Train
     @@trains_list.each { |train| return train if train.number == number }
     nil
   end
-  
+
   def increase_speed
-    @speed+= 1
+    @speed += 1
   end
 
   def stop
     @speed = 0
   end
 
-  def set_route(route)
+  def route=(route)
     @route = route
     stations = @route.stations
     puts "Поезд №#{@number} отправляется по маршруту #{@route.stations.first.name} - #{@route.stations.last.name}"
@@ -44,14 +48,14 @@ class Train
     stations.first.add_train(self)
   end
 
-  def get_current_station
-    if @route.nil?
-      puts "Маршрут не задан!"
-    else
-      puts "Сейчас находится на станции #{@current_station.name}"
-      @current_station
-    end
-  end
+  # def get_current_station
+  #   if @route.nil?
+  #     puts 'Маршрут не задан!'
+  #   else
+  #     puts "Сейчас находится на станции #{@current_station.name}"
+  #     @current_station
+  #   end
+  # end
 
   def get_next_station
     next_station = nil
@@ -64,7 +68,7 @@ class Train
         puts "У поезда №#{@number} нет следующей станции! Он находится в конце маршрута!"
       else
         index = stations.index(@current_station)
-        next_station = stations[index+1]
+        next_station = stations[index + 1]
         puts "Следующая станция для поезда №#{number}: #{next_station.name}"
       end
     end
@@ -82,7 +86,7 @@ class Train
         puts "У поезда №#{@number} нет предыдущей станции! Он находится в начале маршрута!"
       else
         index = stations.index(@current_station)
-        prev_station = stations[index-1]
+        prev_station = stations[index - 1]
         puts "Предыдущая станция для поезда №#{number}: #{prev_station.name}"
       end
     end
@@ -94,7 +98,7 @@ class Train
       puts "У поезда №#{@number} не задан маршрут!"
     else
       next_station = get_next_station
-      if !next_station.nil?
+      unless next_station.nil?
         @current_station.train_departure(self)
         @current_station = next_station
         next_station.add_train(self)
@@ -107,7 +111,7 @@ class Train
       puts "У поезда №#{@number} не задан маршрут!"
     else
       prev_station = get_previous_station
-      if !prev_station.nil?
+      unless prev_station.nil?
         @current_station.train_departure(self)
         puts "Поезд №#{@number} отправляется назад, на станцию #{prev_station.name}"
         @current_station = prev_station
@@ -117,16 +121,14 @@ class Train
   end
 
   def add_car(car)
-    if type_matching?(car)
-      if !is_moving?
-        puts "Вагон #{car} создан успешно и прицеплен к поезду #{self}!"
-        @cars << car
-      end
+    if type_matching?(car) && !moving?
+      puts "Вагон #{car} создан успешно и прицеплен к поезду #{self}!"
+      @cars << car
     end
   end
 
   def remove_car(car)
-    if !is_moving?
+    unless moving?
       @cars.delete(car)
       puts "Вагон #{car} успешно отцеплен от поезда #{self}!"
     end
@@ -138,12 +140,11 @@ class Train
 
   private
 
-  def is_moving?
-    @speed > 0
+  def moving?
+    @speed.positive?
   end
 
   def type_matching?(car)
     @type = car.type
   end
 end
-

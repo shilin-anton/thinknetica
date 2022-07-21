@@ -1,30 +1,32 @@
+# Наличие "# frozen_string_literal: true" вызывает ошибку, при 
+# любйо попытке записать что-то в @message <<
+
 module Validation
-  TRAIN_NUMBER_FORMAT = /^[a-zа-я|\d]{3}-*[a-zа-я|\d]{2}$/i
-  TYPES = ['cargo', 'passenger']
+  TRAIN_NUMBER_FORMAT = /^[a-zа-я|\d]{3}-*[a-zа-я|\d]{2}$/i.freeze
+  TYPES = %w[cargo passenger].freeze
 
   def valid?(object)
     @result = true
-    @message = ""
+    @message = ''
     case object
-      when CargoTrain, PassengerTrain, Train
-        number_validation(object.number)
-        manufacturer_validation(object.manufacturer)
-        type_validation(object.type)
-      when Car, CargoCar, PassengerCar
-        manufacturer_validation(object.manufacturer)
-        type_validation(object.type)
-        capacity_validation(object.capacity)
-      when Station
-        name_validation(object.name)
-      else
-        @result = false
-        @message = "What are you trying to create?"
+    when CargoTrain, PassengerTrain, Train
+      number_validation(object.number)
+      manufacturer_validation(object.manufacturer)
+      type_validation(object.type)
+    when Car, CargoCar, PassengerCar
+      manufacturer_validation(object.manufacturer)
+      type_validation(object.type)
+      capacity_validation(object.capacity)
+    when Station
+      name_validation(object.name)
+    else
+      @result = false
+      @message = 'What are you trying to create?'
     end
-    return @result, @message
+    [@result, @message]
   end
 
   class ValidationError < StandardError
-
     def initialize(msg)
       # system 'clear'
       puts msg
@@ -42,7 +44,7 @@ module Validation
   end
 
   def number_validation(number)
-    if number.nil? || number.empty? || !(number =~ TRAIN_NUMBER_FORMAT)
+    if number.nil? || number.empty? || number !~ TRAIN_NUMBER_FORMAT
       @result = false
       @message << "Number is not valid!\n"
     end
@@ -64,7 +66,7 @@ module Validation
 
   def capacity_validation(capacity)
     puts capacity
-    if capacity.nil? || capacity < 0 || capacity == 0
+    if capacity.nil? || capacity.negative? || capacity.zero?
       @result = false
       @message << "Capacity is not valid!\n"
     end

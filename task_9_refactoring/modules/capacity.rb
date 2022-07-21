@@ -1,4 +1,4 @@
-
+# frozen_string_literal: true
 
 module Capacity
   def set_capacity(capacity)
@@ -6,9 +6,10 @@ module Capacity
   end
 
   def capacity
-    self.volume
+    volume
   end
 
   protected
+
   attr_accessor :volume
 end

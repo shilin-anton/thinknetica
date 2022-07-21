@@ -1,8 +1,10 @@
+# frozen_string_literal: true
 
-require './modules/instance_counter.rb'
+require './modules/instance_counter'
 
 class Station
-  include InstanceCounter, Validation
+  include Validation
+  include InstanceCounter
   attr_accessor :trains
   attr_reader :name
 
@@ -17,7 +19,7 @@ class Station
     @trains = []
 
     valid, msg = valid?(self)
-    raise ValidationError.new(msg) if !valid
+    raise ValidationError, msg unless valid
 
     register_instance
     @@stations_list << self
@@ -30,12 +32,11 @@ class Station
 
   def get_trains
     if @trains.empty?
-      puts "Поездов нет"
+      puts 'Поездов нет'
     else
       @trains
     end
   end
-
 
   def trains_by_type(type)
     trains_amount = 0
@@ -43,7 +44,7 @@ class Station
 
     @trains.each do |train|
       if train.type == type
-        trains_amount+= 1
+        trains_amount += 1
         trains_by_type_list << train
       end
     end
@@ -64,5 +65,4 @@ class Station
   def iterate_trains(&block)
     @trains.each { |train| block.call(train) }
   end
-
 end
