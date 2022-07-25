@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 require './modules/instance_counter'
+require './modules/meta_validation'
 
 class Station
-  include Validation
+  # include Validation
+  include MetaValidation
   include InstanceCounter
   attr_accessor :trains
   attr_reader :name
+
+  validate :name, :presence
 
   @@stations_list = []
 
@@ -18,8 +22,8 @@ class Station
     @name = name
     @trains = []
 
-    valid, msg = valid?(self)
-    raise ValidationError, msg unless valid
+    # valid, msg = valid?(self)
+    # raise ValidationError, msg unless valid
 
     register_instance
     @@stations_list << self

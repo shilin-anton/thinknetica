@@ -2,15 +2,26 @@
 
 require './modules/manufacturer'
 require './modules/instance_counter'
-require './modules/validation'
+# require './modules/validation'
 require './modules/capacity'
+require './modules/accessors'
+require './modules/meta_validation'
 
 class Train
-  include Validation
-  include InstanceCounter
-  include Capacity
-  include Manufacturer
+  # include Validation
+  include InstanceCounter, Capacity, Manufacturer, MetaValidation
+  extend Accessors
+
+  TRAIN_NUMBER_FORMAT = /^[a-zа-я|\d]{3}-*[a-zа-я|\d]{2}$/i.freeze
+
   attr_reader :number, :route, :type, :cars
+
+  attr_accessor_with_history :test1, :test2
+  strong_attr_accessor :test3, String
+  strong_attr_accessor :test4, String
+
+  validate :number, :presence
+  validate :number, :format, TRAIN_NUMBER_FORMAT
 
   @@trains_list = []
 
@@ -19,11 +30,11 @@ class Train
     @speed = 0
     @cars = []
     set_manufacturer(manufacturer)
+    
+    # valid, msg = valid?(self)
+    # raise ValidationError, msg unless valid
 
-    valid, msg = valid?(self)
-    raise ValidationError, msg unless valid
-
-    register_instance
+    #register_instance
     @@trains_list << self
   end
 

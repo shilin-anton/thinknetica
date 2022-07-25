@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require './modules/instance_counter'
+require './modules/meta_validation'
 
 class Route
-  include InstanceCounter
+  include InstanceCounter, MetaValidation
   attr_accessor :stations
 
   def initialize(start_station, end_station)

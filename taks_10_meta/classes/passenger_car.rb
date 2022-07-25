@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PassengerCar < Car
+  validate :capacity, :presence
+  
   def initialize(manufacturer, capacity)
     @type = 'passenger'
     super(manufacturer, capacity)

@@ -2,7 +2,7 @@
 
 module Capacity
   def set_capacity(capacity)
-    self.volume = capacity.to_i
+    self.volume = capacity
   end
 
   def capacity
